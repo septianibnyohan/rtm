@@ -1,0 +1,213 @@
+.client-logo {
+    max-height: 72px;
+    width: auto;
+}
+
+.footer-logo {
+    max-width: 90%;
+    height: auto;
+}
+
+.summary-title {
+    font-size: 27px;
+    color: red;
+    font-weight: bolder;
+    margin-bottom: 0px;
+}
+
+.summary-table td {
+    font-size: 18px !important;
+    text-align: center;
+    font-weight: bold;
+}
+
+.main-title {
+    font-size: 27px;
+    font-weight: bold;
+}
+
+.second-title {
+    font-size: 24px !important;
+    color: black !important;
+    font-weight: bold;
+}
+
+.client-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.client-day {
+    font-size: 14px !important;
+    color: black !important;
+}
+
+.client-time {
+    font-size: 14px !important;
+    color: black !important;
+}
+
+.suhu-title {
+    font-size: 17px;
+}
+
+.suhu-table thead th {
+    font-weight: bold;
+}
+
+.suhu-table td {
+    font-size: 12px;
+    font-family: cursive;
+}
+
+.card {
+    width: 100%;
+}
+
+.histori-title {
+    font-size: 17px;
+}
+
+.histori-table thead th {
+    font-weight: bold;
+}
+
+.histori-table td {
+    font-size: 12px;
+    font-family: cursive;
+}
+
+.suhu-desc {
+    text-align: left;
+}
+
+.innovation-by {
+    text-align: left;
+    color: #1f3c88 !important;
+}
+
+.main-innovation-by {
+    text-align: left;
+    font-weight: bold;
+    color: #1f3c88 !important;
+}
+
+.suhu-update {
+    font-size: 20px;
+}
+
+.suhu-update-number {
+    font-size: 26px;
+    font-weight: bold;
+    display: inline-flex;
+}
+
+.suhu-warning {
+    font-size: 20px;
+    border-radius: 0.75rem;
+    font-weight: bold;
+    padding: 0px 20px 0px 20px;
+}
+
+.brand-logo {
+    font-size: 23px;
+}
+
+.footer {
+    padding: 10px 0px 10px 0px;
+    margin-top: 10px;
+}
+
+.card-margin {
+    margin-bottom: 10px;
+    padding: 0px 10px 0px 10px;
+}
+
+.card .card-header {
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+
+.card .card-body {
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+
+.navbar {
+    margin-bottom: 0px;
+}
+
+.page-number {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.page-number .pagination {
+    justify-content: flex-end;
+}
+
+.widget-56 .widget-56-icon {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 0px;
+}
+
+.table-responsive{
+    overflow-x: hidden;
+}
+
+.text-info {
+    color: #1f3c88 !important;
+}
+
+.vortek-link {
+    font-size: 36px !important;
+    color: #1f3c88 !important;
+}
+
+.dataTables_filter {
+    float: left !important;
+ }
+
+.innovation {
+    font-size: 18px;
+    margin: 0px 0px 0px 0px;
+}
+
+@media screen and (max-width: 575px) {
+    .m-text-center {
+        text-align: center !important;
+    }
+
+    .card {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .innovation-by {
+        text-align: center;
+        color: #1f3c88 !important;
+    }
+    
+    .main-innovation-by {
+        text-align: center;
+        font-weight: bold;
+        color: #1f3c88 !important;
+    }
+
+    .second-title {
+        font-size: 18px !important;
+        color: black !important;
+        font-weight: bold;
+    }
+
+    .vortek-link {
+        font-size: 36px !important;
+        color: #1f3c88 !important;
+    }
+
+    .table-responsive{
+        overflow-x: scroll;
+    }
+    
+}

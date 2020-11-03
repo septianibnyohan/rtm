@@ -1,0 +1,21 @@
+{
+    "name": "Monitoring",
+    "short_name": "Monitoring",
+    "start_url": "/home",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#e5e5e5",
+    "icons": [
+      {
+        "src": "vortek_512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      },
+      {
+        "src": "vortek_192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      }
+    ]
+  }
