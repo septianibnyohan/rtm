@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use DB;
 
 class OutExport implements FromCollection, Responsable, WithHeadings
 {
@@ -50,11 +51,13 @@ class OutExport implements FromCollection, Responsable, WithHeadings
             $from = date($this->start_date);
             $to = date($this->end_date);
 
-            $list_out = Out::whereBetween('tanggal', [$from, $to])->get();
+            //$list_out = Out::whereBetween('tanggal', [$from, $to])->get();
+            $list_out = DB::table('out')->select('no', 'tanggal', 'waktu')->whereBetween('tanggal', [$from, $to])->orderBy('id', 'DESC')->get();
         }
         else
         {
-            $list_out = Out::orderBy('id', 'DESC')->get();
+            //$list_out = Out::orderBy('id', 'DESC')->get();
+            $list_out = DB::table('out')->select('no', 'tanggal', 'waktu')->orderBy('id', 'DESC')->get();
         }
 
         return $list_out;
@@ -64,7 +67,10 @@ class OutExport implements FromCollection, Responsable, WithHeadings
     {
         return [
             [
-                'Download '.date("Y-m-d").' '.date('H:i:s')
+                '# Download Date : '.date("Y-m-d").' ... '.date('H:i:s').' #'
+            ],
+            [
+                isset($this->start_date) && isset($this->end_date) ? '# Data from '.$this->start_date.' until '.$this->end_date.' #' : 'All Date'
             ],
             [
     

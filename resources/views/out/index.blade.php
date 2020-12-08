@@ -39,7 +39,7 @@
                                 <table id="out-table" class="table table-striped table-bordered dataTable no-footer" style="width: 100%;" role="grid" aria-describedby="example_info">
                                     <thead>
                                         <tr role="row">
-                                            <th>Id</th>
+                                            <!-- <th>Id</th> -->
                                             <th>No</th>
                                             <th>Tanggal</th>
                                             <th>Waktu</th>
@@ -80,7 +80,7 @@ $(function() {
         ajax: '{{ config('app.url')}}/listOut',
         'lengthChange': true,
         columns: [
-            { data: 'id', name: 'id' },
+            // { data: 'id', name: 'id' },
             { data: 'no', name: 'no' },
             { data: 'tanggal', name: 'tanggal' },
             { data: 'waktu', name: 'waktu' }
@@ -101,7 +101,7 @@ $(function() {
             ajax: '{{ config('app.url')}}/listOut?start_date=' + $('#start_date').val() + "&end_date=" + $('#end_date').val(),
             'lengthChange': true,
             columns: [
-                { data: 'id', name: 'id' },
+                // { data: 'id', name: 'id' },
                 { data: 'no', name: 'no' },
                 { data: 'tanggal', name: 'tanggal' },
                 { data: 'waktu', name: 'waktu' }

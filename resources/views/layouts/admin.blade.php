@@ -12,8 +12,14 @@
     <!-- endinject -->
     <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> -->
     <link rel="stylesheet" href="{{ config('app.url') }}/css/main.css">
+    <link rel="stylesheet" href="{{ config('app.url') }}/css/bootstrap-colorpicker.css">
     @yield('css')
     <link rel="manifest" href="./manifest.webmanifest">
+    <style>
+        .fc-sat { background-color:red !important; }
+        .fc-sun { background-color:red !important;  }
+        .back-red { background-color:red !important;  }
+    </style>
 </head>
 
 <body class="minimized-sidebar">
@@ -545,6 +551,7 @@
     <script src="{{ config('app.url') }}/dist/js/components/flite-sidebar/dashboard.js"></script>
     <script src="{{ config('app.url') }}/dist/js/components/flite-sidebar/common.js"></script>
     <!-- End custom js for this page-->
+    <script src="{{ config('app.url') }}/js/bootstrap-colorpicker.js"></script>
     @yield('js')
 </body>
 

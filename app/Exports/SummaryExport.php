@@ -68,12 +68,15 @@ class SummaryExport implements FromCollection, Responsable, WithHeadings
     public function headings(): array
     {
         return [
-        [
-            'Download '.date("Y-m-d").' '.date('H:i:s')
-        ],
-        [
-
-        ],
+            [
+                '# Download Date : '.date("Y-m-d").' ... '.date('H:i:s').' #'
+            ],
+            [
+                isset($this->start_date) && isset($this->end_date) ? '# Data from '.$this->start_date.' until '.$this->end_date.' #' : 'All Date'
+            ],
+            [
+    
+            ],
             [
             'No',
             'Suhu Normal',

@@ -35,3 +35,23 @@ Route::get('/excel_suhu', 'SuhuController@export_excel')->name('excel_suhu');
 Route::get('/excel_summary', 'SummaryController@export_excel')->name('excel_summary');
 Route::get('/excel_in', 'InController@export_excel')->name('excel_in');
 Route::get('/excel_out', 'OutController@export_excel')->name('excel_out');
+
+Route::get('/cal_load', 'CalendarController@load')->name('cal_load');
+Route::post('/cal_insert', 'CalendarController@insert')->name('cal_insert');
+Route::post('/cal_getevent', 'CalendarController@getevent')->name('cal_getevent');
+Route::post('/cal_update', 'CalendarController@update')->name('cal_update');
+Route::post('/cal_delete', 'CalendarController@delete')->name('cal_delete');
+
+Route::get('/test_index', 'TestController@index')->name('test_index');
+Route::get('/test_getsuhu', 'TestController@getsuhu')->name('test_getsuhu');
+
+//display todo list
+Route::get('list-user','DataTableUserCrudController@index');
+//display add todo form and create a new todo
+Route::get('add-user','DataTableUserCrudController@create');
+Route::post('post-user','DataTableUserCrudController@store');
+//display add todo form and create a new todo
+Route::get('edit-user/{id?}','DataTableUserCrudController@edit');
+Route::post('update-user','DataTableUserCrudController@update');
+//display add todo form and create a new todo
+Route::get('delete-user/{id?}','DataTableUserCrudController@delete');

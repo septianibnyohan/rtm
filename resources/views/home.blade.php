@@ -1,439 +1,621 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="row">
-    <div class="col-lg-12 col-12">
-        <div class="widget-57 card-margin row">
-
-                <div class="col-lg-4 col-12">
-                    <div class="widget-57-content m-text-center">
-                        <img src="{{ config('app.url') }}{{ $client_logo }}" class="client-logo" alt="Picture" />
-                    </div>
+<div class="card card-margin">
+        <div class="card-body">
+                <div class="card-header">
+                        <h5 class="card-title">Default</h5>
                 </div>
-                <div class="col-lg-4 col-12">
-                    <div class="widget-57-content text-center">
-                        <p class="name main-title">Real Time Monitoring</p>
-                        <p class="info text-muted second-title">Penerapan Protokol Kesehatan</p>
-                    </div>
+                <div id='calendar-container'>
+                        <div id='calendar-app' class="full-calendar"></div>
                 </div>
-                <div class="col-lg-4 col-12">
-                    <div class="widget-57-content text-right m-text-center">
-                        <!-- <a class="btn btn-soft-base" href="#">View Profile</a> -->
-                        <p class="name client-name">{{ $client_name }}</p>
-                        <p class="info text-muted client-day" id="current_date">Kamis, 1 Oktober 2020</p>
-                        <p class="info text-muted client-time" id="current_time">15:24:37</p>
-                    </div>
-                </div>
-      
         </div>
-    </div>
 </div>
-<div class="row">
-    <div class="col-lg-3 d-flex align-items-stretch">
-        <div class="card">
-            <div class="card-header">
-                <div class="col-12">
-                    <p class="histori-title text-center">Histori Suhu</p>
-                </div>
+
+<div class="modal fade" id="addeventmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Add Event</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table id="suhu-table" class="table table-striped table-bordered suhu-table" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Suhu</th>
-                                <th>Waktu</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
+
+            <div class="modal-body">
+
+                <div class="container-fluid">
+
+                    <form id="createEvent" class="form-horizontal">
+                    @csrf
+                    <div class="row">
+
+                        <div class="col-md-6">
+
+                            <!-- <div id="title-group" class="form-group">
+                                <label class="control-label" for="title">Title</label>
+                                <input type="text" class="form-control" name="title">
+                            </div> -->
+
+                            <div class="form-group">
+                                <label for="exampleOption">Type</label>
+                                <select name="type" class="form-control" id="type">
+                                        <option value="1">Request</option>
+                                        <option value="2">Holiday</option>
+                                </select>
+                            </div>
+
+                            <div id="startdate-group" class="form-group">
+                                <label class="control-label" for="startDate">Start Date</label>
+                                <input type="text" class="form-control datetimepicker" id="startDate" name="startDate">
+                                <!-- errors will go here -->
+                            </div>
+
+                            <div id="description" class="form-group">
+                                <label for="exampleOption">Description</label>
+                                <select name="description" class="form-control" id="exampleOption">
+                                        <option value="LEAVE">Leave</option>
+                                        <option value="SICK">Sick</option>
+                                        <option value="WFH">Work From Home</option>
+                                        <option value="TRAINING">Training</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div id="title-group" class="form-group">
+                                <label class="control-label" for="title">Title</label>
+                                <input type="text" class="form-control" name="title">
+                            </div>
+
+                            <div id="user_list" class="form-group">
+                                <label for="exampleOption">User</label>
+                                <select name="user" class="form-control" id="type">
+                                @foreach($user_list as $user) 
+                                    <option value="{{ $user}}">{{ $user}}</option>
+                                @endforeach
+                                </select>
+                            </div>
+
+                            <div id="enddate-group" class="form-group">
+                                <label class="control-label" for="endDate">End Date</label>
+                                <input type="text" class="form-control datetimepicker" id="endDate" name="endDate">
+                                <!-- errors will go here -->
+                            </div>
 
 
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-5 d-flex align-items-stretch">
-        <div class="card text-center">
-            <div class="card-header text-center">
-                <div class="col-12">
-                    <p class="summary-title">SUMMARY</p>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table id="example" class="table table-striped table-bordered summary-table" style="width:100%">
-                        <tbody>
-                            <tr>
-                                <td>Suhu Normal</td>
-                                <td id="suhu_normal">0</td>
-                            </tr>
-                            <tr>
-                                <td>Suhu Tinggi</td>
-                                <td id="suhu_tinggi">0</td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah Masuk</td>
-                                <td id="jumlah_masuk">0</td>
-                            </tr>
-                            <tr>
-                                <td>Jumlah Keluar</td>
-                                <td id="jumlah_keluar">0</td>
-                            </tr>
-                            <tr>
-                                <td>Di dalam Ruangan</td>
-                                <td id="di_dalam_ruangan">0</td>
-                            </tr>
-                            <tr>
-                                <td>Kapasitas Ruangan</td>
-                                <td id="kapasitas_ruangan">{{ $room_capacity }} </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                            <!-- <div id="color-group" class="form-group">
+                                <label class="control-label" for="color">Colour</label>
+                                <input type="text" class="form-control color-picker" name="color" value="#6453e9">
+                            </div>
 
-                <div class="row">
-                    <div class="col-12">
-                        <p class="name suhu-desc">Suhu Normal : 35 &#8451 ~ 37,4 &#8451</p>
-                        <p class="name suhu-desc">Suhu Tinggi : >= 37.5 &#8451</p>
+                            <div id="textcolor-group" class="form-group">
+                                <label class="control-label" for="textcolor">Text Colour</label>
+                                <input type="text" class="form-control color-picker" name="text_color" value="#ffffff">
+                            </div> -->
+
+                            <input type="hidden" name="color" value="#6453e9">
+                            <input type="hidden" id="text_color" name="editEventId" value="#ffffff">
+                            <!-- <div id="isholiday-group" class="form-group">
+                                <label class="control-label" for="textcolor">Is Holiday?</label><br>
+                                <div class="string-check string-check-bordered-primary mb-2">
+                                        <input type="checkbox" class="form-control form-check-input" name="is_holiday" id="isholiday">
+                                        <label class="string-check-label" for="formCheckInput2">
+                                                <span class="ml-2">Yes</span>
+                                        </label>
+                                </div>
+                            </div> -->
+                        </div>
+
+
+
                     </div>
+
+                    
+
                 </div>
 
-                <div class="row">
-                    <div class="col-12 widget-56">
-                        <p class="suhu-update">Suhu Update</p>
-                        <p class="suhu-update-number">
-                            <span class="widget-56-icon bg-soft-info text-info" id="current-suhu">---</span>
-                        </p>
-                        <div class="alert alert-danger text-center suhu-warning d-none" id="suhu-warning" role="alert">
-                            <span class="alert-text">Suhu Tinggi Terdeteksi</span>
-                        </div>
-                        <div class="alert alert-danger text-center suhu-warning d-none" id="in-warning" role="alert">
-                            <span class="alert-text">Terlalu Banyak Orang</span>
-                        </div>
-                        <div class="alert alert-danger text-center suhu-warning d-none" id="measurement-warning" role="alert">
-                            <span class="alert-text"><span id="jumlah-not-warning">8</span> Orang Belum Ukur Suhu</span>
-                        </div>
-                    </div>
-                </div>
+            </div>
 
-                <!-- <audio id="alarm01" src="/sound/alarm01.mp3" preload="auto"></audio> -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
             </div>
-        </div>
-    </div>
-    <div class="col-lg-2 d-flex align-items-stretch">
-        <div class="card">
-            <div class="card-header">
-                <div class="col-12 text-center">
-                    <p class="histori-title">Histori In</p>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table id="in-table" class="table table-striped table-bordered histori-table" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Waktu</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-2 d-flex align-items-stretch">
-        <div class="card">
-            <div class="card-header">
-                <div class="col-12 text-center">
-                    <p class="histori-title">Histori Out</p>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table id="out-table" class="table table-striped table-bordered histori-table" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Waktu</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
 
+            </form>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
 </div>
+<!-- /.modal -->
+
+<div class="modal fade" id="editeventmodal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Update Event</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="container-fluid">
+
+                    <form id="editEvent" class="form-horizontal">
+                    <input type="hidden" id="editEventId" name="editEventId" value="">
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+
+                            <div class="form-group">
+                                <label for="exampleOption">Type</label>
+                                <select name="type" class="form-control" id="edit_type">
+                                        <option value="1">Request</option>
+                                        <option value="2">Holiday</option>
+                                </select>
+                            </div>
+
+                            <div id="edit-startdate-group" class="form-group">
+                                <label class="control-label" for="editStartDate">Start Date</label>
+                                <input type="text" class="form-control datetimepicker" id="editStartDate" name="editStartDate">
+                                <!-- errors will go here -->
+                            </div>
+
+                            <div class="form-group" id="edit-description-group">
+                                <label for="exampleOption">Description</label>
+                                <select name="description" class="form-control" id="edit_description">
+                                        <option value="LEAVE">Leave</option>
+                                        <option value="SICK">Sick</option>
+                                        <option value="WFH">Work From Home</option>
+                                        <option value="TRAINING">Training</option>
+                                </select>
+                            </div>
+
+                            
+
+                            
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div id="edit-title-group" class="form-group">
+                                <label class="control-label" for="title">Title</label>
+                                <input type="text" id="edit-title" class="form-control" name="title">
+                            </div>
+
+                            <div id="edit-user_group" class="form-group">
+                                <label for="exampleOption">User</label>
+                                <select name="user" class="form-control" id="edit_user">
+                                @foreach($user_list as $user) 
+                                    <option value="{{ $user}}">{{ $user}}</option>
+                                @endforeach
+                                </select>
+                            </div>
+
+                            <div id="edit-enddate-group" class="form-group">
+                                <label class="control-label" for="editEndDate">End Date</label>
+                                <input type="text" class="form-control datetimepicker" id="editEndDate" name="editEndDate">
+                                <!-- errors will go here -->
+                            </div>
+
+                            <!-- <div id="edit-color-group" class="form-group">
+                                <label class="control-label" for="editColor">Colour</label>
+                                <input type="text" class="form-control color-picker" id="editColor" name="editColor" value="#6453e9">
+                            </div>
+
+                            <div id="edit-textcolor-group" class="form-group">
+                                <label class="control-label" for="editTextColor">Text Colour</label>
+                                <input type="text" class="form-control color-picker" id="editTextColor" name="editTextColor" value="#ffffff">
+                            </div> -->
+
+                            <input type="hidden" id="editColor" name="editColor value="#6453e9">
+                            <input type="hidden" id="editTextColor" name="editTextColor" value="#ffffff">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn btn-danger" id="deleteEvent" data-id>Delete</button>
+            </div>
+
+            </form>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 @endsection
 
 @section('js')
 
     <script>
-    window.addEventListener('load', () => {
-        registerSW();
-    });
 
-    async function registerSW() {
-        if ('serviceWorker' in navigator) {
-            try {
-                //await navigator.serviceWorker.register('sw.js');
-                navigator.serviceWorker.register("{{ config('app.url') }}/sw.js", { scope: "{{ config('app.url') }}/" }).then(() => {
-                        console.log("Install succeeded as the max allowed scope was overriden to    '/'.");
-                    });
-            } catch (e) {
-                console.log('SW registration failed');
-            }
-        }
+    function saveEvent()
+    {
+        //console.log('test');
+        var evtStart = $('#evtStart').val();
+        var evtEnd = $('#evtEnd').val();
+        var title = $('#title').val();
+
+        calendar.addEvent({
+            title: title,
+            start: evtStart,
+            allDay: true
+        });
+
+        $('#event-modal').modal('hide');
     }
 
-    $(function() {
-        var suhu_table = $('#suhu-table').DataTable({
-            createdRow: function ( row, data, index ) {
-                var current_suhu = Math.round(parseFloat(data.ldr) * 10) / 10;
-                if (current_suhu >= 37.5)
-                {
-                    $('td', row).eq(0).addClass('text-danger');
-                    $('td', row).eq(1).addClass('text-danger');
-                    $('td', row).eq(2).addClass('text-danger');
-                }
-            },
-            order : [[ 0, "desc" ]],
-            bInfo : false,
-            ajax: '{{ config('app.url')}}/api/listSuhu',
-            'lengthChange': false,
-            columns: [
-                { data: 'no', name: 'no' },
-                { 
-                    data: 'ldr', 
-                    render: function ( data, type, row ) {
-                        $('td', row).eq(0).addClass('text-danger');
-                        $('td', data).eq(1).addClass('text-danger');
-                        return Math.round(parseFloat(data) * 10) / 10 + " &#8451";
-                    }
-                },
-                { data: 'waktu', name: 'waktu' }
-            ]
+    var calendar;
+    var url ='/';
+    var id;
+
+    (function($) {
+        'use strict';
+
+        $('body').on('click', '.datetimepicker', function() {
+            $(this).not('.hasDateTimePicker').datepicker({
+                controlType: 'select',
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "yy-mm-dd",
+                timeFormat: 'HH:mm:ss',
+                yearRange: "1900:+10",
+                showOn:'focus',
+                firstDay: 1
+            }).focus();
         });
 
-        var in_table = $('#in-table').DataTable({
-            order : [[ 0, "desc" ]],
-            bInfo : false,
-            ajax: '{{ config('app.url')}}/api/listIn',
-            'lengthChange': false,
-            columns: [
-                { data: 'no', name: 'no' },
-                { data: 'waktu', name: 'waktu' }
-            ]
-        });
+        $('body').on('click', '#deleteEvent', function() {
+            if(confirm("Are you sure you want to remove it?")) {
+                $.ajax({
+                    url:url+"cal_delete",
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type:"POST",
+                    data:{'id':id},
+                }); 
 
-        var out_table = $('#out-table').DataTable({
-            order : [[ 0, "desc" ]],
-            bInfo : false,
-            ajax: '{{ config('app.url')}}/api/listOut',
-            'lengthChange': false,
-            columns: [
-                { data: 'no', name: 'no' },
-                { data: 'waktu', name: 'waktu' }
-            ]
-        });
+                //close model
+                $('#editeventmodal').modal('hide');
 
-        $.get( "{{ config('app.url')}}/api/getLastSummary", 
-            function( data_summary ) {
-                $('#suhu_normal').html(data_summary.suhu_normal);
-                $('#suhu_tinggi').html(data_summary.suhu_tinggi);
-                $('#jumlah_masuk').html(data_summary.jumlah_masuk);
-                $('#jumlah_keluar').html(data_summary.jumlah_keluar);
-                $('#di_dalam_ruangan').html(data_summary.di_dalam_ruangan);
-                $('#kapasitas_ruangan').html(data_summary.kapasitas_ruangan);
+                //refresh calendar
+                calendar.refetchEvents();         
             }
-        );
+        });
 
-        $.get( "{{ config('app.url')}}/api/getLastSuhu?event_id=1", 
-            function( data_last_suhu ) {
+        $( "#type" ).change(function() {
+            if ($(this).val() == 1)
+            {
+                //console.log("satu");
+                $('#title-group').hide();
+                $('#user_list').show();
+                $('#description').show();
+            }
+            if ($(this).val() == 2)
+            {
+                //console.log("dua");
+                $('#title-group').show();
+                $('#user_list').hide();
+                $('#description').hide();
+            }
+        });
 
-                if (jQuery.isEmptyObject(data_last_suhu))
-                {
-                    return;
+        $( "#edit_type" ).change(function() {
+            if ($(this).val() == 1)
+            {
+                $('#edit-description-group').show();
+                $('#edit-user_group').show();
+                $('#edit-title-group').hide();
+            }
+            if ($(this).val() == 2)
+            {
+                $('#edit-description-group').hide();
+                $('#edit-user_group').hide();
+                $('#edit-title-group').show();
+            }
+        });
+
+        $(".color-picker").colorpicker();
+        
+        var todayDate = moment().startOf('day');
+        var YM = todayDate.format('YYYY-MM');
+        var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
+        var TODAY = todayDate.format('YYYY-MM-DD');
+        var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
+
+        var calendarEl = document.getElementById('calendar-app');
+        calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: [ 'interaction', 'dayGrid', 'timeGrid' ],
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,dayGridWeek,timeGridDay'
+            },
+            height: 800,
+            contentHeight: 780,
+            aspectRatio: 3,  // see: https://fullcalendar.io/docs/aspectRatio
+            nowIndicator: true,
+            now: TODAY + 'T09:25:00', // just for demo
+            views: {
+                dayGridMonth: { buttonText: 'month' },
+                dayGridWeek: { buttonText: 'week' },
+                timeGridDay: { buttonText: 'day' }
+            },
+            defaultView: 'dayGridMonth',
+            defaultDate: TODAY,
+            editable: true,
+            eventLimit: true, // allow "more" link when too many events
+            navLinks: true,
+            dateClick: function(info) {
+                var start = info.dateStr;
+                var end = info.dateStr;
+                $('#addeventmodal').find('input[name=startDate]').val(
+                    start.format('YYYY-MM-DD HH:mm:ss')
+                );
+                $('#addeventmodal').find('input[name=endDate]').val(
+                    end.format('YYYY-MM-DD HH:mm:ss')
+                );
+                
+                $('#addeventmodal').modal('show');
+
+                $('#type').val(1);
+                $('#title-group').hide();
+                $('#user_list').show();
+                $('#description').show();
+            },
+            eventClick: function(arg) {
+                id = arg.event.id;
+                
+                $('#editEventId').val(id);
+                $('#deleteEvent').attr('data-id', id); 
+
+                $.ajax({
+                    url:"/cal_getevent",
+                    headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type:"POST",
+                    dataType: 'json',
+                    data:{id:id},
+                    success: function(data) {
+                            $('#edit_description').val(data.title);
+                            $('#editStartDate').val(data.start);
+                            $('#editEndDate').val(data.end);
+                            $('#editColor').val(data.color);
+                            $('#editTextColor').val(data.textColor);
+                            $('#edit_type').val(data.event_type);
+                            $('#edit_user').val(data.user);
+                            $('#edit-title').val(data.title);
+
+                            if (data.event_type == 1)
+                            {
+                                $('#edit-description-group').show();
+                                $('#edit-user_group').show();
+                                $('#edit-title-group').hide();
+                            }
+                            else if (data.event_type == 2)
+                            {
+                                $('#edit-description-group').hide();
+                                $('#edit-user_group').hide();
+                                $('#edit-title-group').show();
+                            }
+
+                            $('#editeventmodal').modal();
+
+                            if (data.classname == "red-back"){
+                                $('#edit_isholiday').prop("checked",true);
+                            } else{
+                                $('#edit_isholiday').prop("checked",false);
+                            }
+                        }
+                });
+                
+                calendar.refetchEvents();
+            },
+            eventDrop: function(arg) {
+                //console.log(arg);
+                var start = arg.event.start.toDateString()+' '+arg.event.start.getHours()+':'+arg.event.start.getMinutes()+':'+arg.event.start.getSeconds();
+                if (arg.event.end == null) {
+                    end = start;
+                } else {
+                    var end = arg.event.end.toDateString()+' '+arg.event.end.getHours()+':'+arg.event.end.getMinutes()+':'+arg.event.end.getSeconds();
                 }
 
-                var current_suhu = Math.round(parseFloat(data_last_suhu.ldr) * 10) / 10;
-                $('#current-suhu').html(Math.round(parseFloat(data_last_suhu.ldr) * 10) / 10 + ' &#8451');
+                var type = 1;
 
-                if (current_suhu >= 37.5)
+                if (arg.event.classNames[0] == "red-back")
                 {
-                    $('#suhu-warning').removeClass('d-none');
-                    $('#current-suhu').removeClass('bg-soft-info');
-                    $('#current-suhu').removeClass('text-info');
-                    $('#current-suhu').addClass('bg-soft-danger');
-                    $('#current-suhu').addClass('text-danger');
+                    type = 2;
+                }
+
+                $.ajax({
+                    url:url+"cal_update",
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type:"POST",
+                    data:{id:arg.event.id, start:start, end:end, type:type},
+                });
+
+                calendar.render();
+            },
+            eventResize: function(arg) {
+
+                console.log("event resize");
+                var start = arg.event.start.toDateString()+' '+arg.event.start.getHours()+':'+arg.event.start.getMinutes()+':'+arg.event.start.getSeconds();
+                var end = arg.event.end.toDateString()+' '+arg.event.end.getHours()+':'+arg.event.end.getMinutes()+':'+arg.event.end.getSeconds();
+
+                $.ajax({
+                    url:url+"cal_update",
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    type:"POST",
+                    data:{id:arg.event.id, start:start, end:end},
+                });
+            },
+            events: '/cal_load',
+            eventRender: function(info) {
+                var element = $(info.el);
+                if (info.event.extendedProps && info.event.extendedProps.description) {
+                    if (element.hasClass('fc-day-grid-event')) {
+                        element.data('content', info.event.extendedProps.description);
+                        element.data('placement', 'top');
+                    } else if (element.hasClass('fc-time-grid-event')) {
+                        element.find('.fc-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
+                    } else if (element.find('.fc-list-item-title').lenght !== 0) {
+                        element.find('.fc-list-item-title').append('<div class="fc-description">' + info.event.extendedProps.description + '</div>');
+                    }
+                }
+
+                //console.log(info.event);
+                if (info.event.classNames[0] == "red-back")
+                {
+                    var eventStart = moment(info.event.start);
+                    $("td[data-date='"+eventStart.format('YYYY-MM-DD')+"'].fc-day").addClass('back-red');
                 }
                 else
                 {
-                    $('#suhu-warning').removeClass('d-none');
-                    $('#suhu-warning').addClass('d-none');
-                    $('#current-suhu').removeClass('bg-soft-danger');
-                    $('#current-suhu').removeClass('text-danger');
-                    $('#current-suhu').addClass('bg-soft-info');
-                    $('#current-suhu').addClass('text-info');
+                    var eventStart = moment(info.event.start);
+                    $("td[data-date='"+eventStart.format('YYYY-MM-DD')+"'].fc-day").removeClass('back-red');
                 }
+                
             }
-        );
+        });
 
-        $('#suhu-table_filter').parent().prev().remove();
-        $('#in-table_filter').parent().prev().remove();
-        $('#out-table_filter').parent().prev().remove();
+        calendar.render();
 
-        setInterval(function(){ 
-            var today = new Date();
-            var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu"];
-            var months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        $('#createEvent').submit(function(event) {
 
-            var tanggal = days[today.getDay()] + ", " + today.getDate() + " " + months[today.getMonth()] + " " + today.getFullYear();
+            // stop the form refreshing the page
+            event.preventDefault();
 
-            $('#current_date').html(tanggal);
-            $("#current_time").html(time);
-            $.get( "{{ config('app.url')}}/api/checkEvent", function( data_event ) {
-                //console.log(data);
-                //console.log(data.length);
-                if (data_event.length > 0)
-                {
-                    switch(data_event[0].code){
-                        case 'suhu':
-                            $.get( "{{ config('app.url')}}/api/getLastSuhu?event_id=" + data_event[0].id, 
-                                function( data_last_suhu ) {
-                                    var current_suhu = Math.round(parseFloat(data_last_suhu.ldr) * 10) / 10;
-                                    $('#current-suhu').html(Math.round(parseFloat(data_last_suhu.ldr) * 10)/10 + ' &#8451');
-                                    suhu_table.row.add( {
-                                        'no': data_last_suhu.no,
-                                        'ldr': data_last_suhu.ldr,
-                                        'waktu': data_last_suhu.waktu
-                                    }).order([0, "desc" ]).draw();
+            $('.form-group').removeClass('has-error'); // remove the error class
+            $('.help-block').remove(); // remove the error text
 
-                                    if (current_suhu >= 37.5)
-                                    {
-                                        var audio1 = new Audio('{{ config('app.url') }}/sound/alarm01.mp3');
-                                        audio1.play();
+            // process the form
+            $.ajax({
+                type        : "POST",
+                url         : '/cal_insert',
+                data        : $(this).serialize(),
+                dataType    : 'json',
+                encode      : true
+            }).done(function(data) {
 
-                                        $('#suhu-warning').removeClass('d-none');
-                                        $('#current-suhu').removeClass('bg-soft-info');
-                                        $('#current-suhu').removeClass('text-info');
-                                        $('#current-suhu').addClass('bg-soft-danger');
-                                        $('#current-suhu').addClass('text-danger');
-                                    }
-                                    else
-                                    {
-                                        $('#suhu-warning').removeClass('d-none');
-                                        $('#suhu-warning').addClass('d-none');
-                                        $('#current-suhu').removeClass('bg-soft-danger');
-                                        $('#current-suhu').removeClass('text-danger');
-                                        $('#current-suhu').addClass('bg-soft-info');
-                                        $('#current-suhu').addClass('text-info');
-                                    }
-                                }
-                            );
-                            
-                            
-                            //datatable suhu
-                            //get data suhu current
-                            break;
-                        case 'in':
-                            // datatable histori in
-                            $.get( "{{ config('app.url')}}/api/getLastIn?event_id=" + data_event[0].id, 
-                                function( data_last_in ) {
-                                    in_table.row.add( {
-                                        'no': data_last_in.no,
-                                        'waktu': data_last_in.waktu
-                                    }).order([0, "desc" ]).draw();
-                                }
-                            );
-                            break;
-                        case 'out':
-                            // datatable histori out
-                            $.get( "{{ config('app.url')}}/api/getLastOut?event_id=" + data_event[0].id, 
-                                function( data_last_out ) {
-                                    out_table.row.add( {
-                                        'no': data_last_out.no,
-                                        'waktu': data_last_out.waktu
-                                    }).order([0, "desc" ]).draw();
-                                }
-                            );
-                            break;
+                // insert worked
+                if (data.success) {
+                    
+                    //remove any form data
+                    $('#createEvent').trigger("reset");
+
+                    //close model
+                    $('#addeventmodal').modal('hide');
+
+                    //refresh calendar
+                    calendar.refetchEvents();
+
+                } else {
+
+                    //if error exists update html
+                    if (data.errors.date) {
+                        $('#date-group').addClass('has-error');
+                        $('#date-group').append('<div class="help-block">' + data.errors.date + '</div>');
                     }
 
-                    $.get( "{{ config('app.url')}}/api/getLastSummary", 
-                        function( data_summary ) {
-                           $('#suhu_normal').html(data_summary.suhu_normal);
-                           $('#suhu_tinggi').html(data_summary.suhu_tinggi);
-                           $('#jumlah_masuk').html(data_summary.jumlah_masuk);
-                           $('#jumlah_keluar').html(data_summary.jumlah_keluar);
-                           $('#di_dalam_ruangan').html(data_summary.di_dalam_ruangan);
-                           $('#kapasitas_ruangan').html(data_summary.kapasitas_ruangan);
+                    if (data.errors.title) {
+                        $('#title-group').addClass('has-error');
+                        $('#title-group').append('<div class="help-block">' + data.errors.title + '</div>');
+                    }
 
-                           var di_dalam_ruangan = parseInt(data_summary.di_dalam_ruangan);
-                           var kapasitas_ruangan = parseInt(data_summary.kapasitas_ruangan);
-
-                            if (di_dalam_ruangan > kapasitas_ruangan)
-                            {
-                                if (data_event[0].code == "in")
-                                {
-                                    var audio2 = new Audio('{{ config('app.url') }}/sound/alarm02.mp3');
-                                    audio2.play();
-                                }   
-                                
-                                $('#in-warning').removeClass('d-none');
-                            }
-                            else
-                            {
-                                $('#in-warning').removeClass('d-none');
-                                $('#in-warning').addClass('d-none');
-                            }
-
-                            var jumlah_ukur_suhu = parseInt(data_summary.suhu_normal) + parseInt(data_summary.suhu_tinggi);
-                            var jumlah_masuk = parseInt(data_summary.jumlah_masuk);
-
-                            if (jumlah_masuk > jumlah_ukur_suhu)
-                            {
-                                var audio3 = new Audio('{{ config('app.url') }}/sound/alarm03.mp3');
-                                audio3.play();
-                                $('#jumlah-not-warning').text(jumlah_masuk - jumlah_ukur_suhu);
-                                $('#measurement-warning').removeClass('d-none');
-                            }
-                            else
-                            {
-                                $('#measurement-warning').removeClass('d-none');
-                                $('#measurement-warning').addClass('d-none');
-                            }
-                        }
-                    );
                 }
-            }); 
-        }, 1000);
-    });
-    </script>
-  <script>
 
-    // setInterval(function(){ 
-    //     $.get( "{{ config('app.url')}}/api/checkEvent", function( data ) {
-    //         //console.log(data);
-    //         //console.log(data.length);
-    //         if (data.length > 0)
-    //         {
-    //             switch(data[0].code){
-    //                 case 'suhu':
-    //                     //datatable suhu
-    //                     //get data suhu current
-    //                     break;
-    //                 case 'in':
-    //                     // datatable histori in
-    //                     break;
-    //                 case 'out':
-    //                     // datatable histori out
-    //                     break;
-    //             }
-    //         }
-    //     }); 
-    // }, 1000);
-  </script>
+            });
+        });
+
+        $('#editEvent').submit(function(event) {
+
+            // stop the form refreshing the page
+            event.preventDefault();
+
+            $('.form-group').removeClass('has-error'); // remove the error class
+            $('.help-block').remove(); // remove the error text
+
+            //form data
+            var id = $('#editEventId').val();
+            var type =  $('#edit_type').val();
+            var title = $('#edit_type').val() == 1 ? $('#edit_user').val() + " : " + $('#edit_description').val() : $('#edit-title').val();
+            var start = $('#editStartDate').val();
+            var end = $('#editEndDate').val();
+            var color = $('#editColor').val();
+            var textColor = $('#editTextColor').val();
+            var isholiday = $('#edit_isholiday').prop('checked') ? "on" : null;
+            // process the form
+            $.ajax({
+                type        : "POST",
+                url         : url+'cal_update',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                data        : {
+                    id:id, 
+                    title:title, 
+                    start:start,
+                    end:end,
+                    color:color,
+                    text_color:textColor,
+                    is_holiday:isholiday,
+                    type: type
+                },
+                dataType    : 'json',
+                encode      : true
+            }).done(function(data) {
+
+                // insert worked
+                if (data.success) {
+                    //remove any form data
+                    $('#editEvent').trigger("reset");
+
+                    //close model
+                    $('#editeventmodal').modal('hide');
+
+                    //refresh calendar
+                    calendar.refetchEvents();
+
+                    //setTimeout(() => { console.log("World!"); }, 2000);
+                    calendar.render();
+                } else {
+
+                    //if error exists update html
+                    if (data.errors.date) {
+                        $('#date-group').addClass('has-error');
+                        $('#date-group').append('<div class="help-block">' + data.errors.date + '</div>');
+                    }
+
+                    if (data.errors.title) {
+                        $('#title-group').addClass('has-error');
+                        $('#title-group').append('<div class="help-block">' + data.errors.title + '</div>');
+                    }
+
+                }
+
+            });
+            
+        });
+    })(jQuery);
+    </script>
 @endsection

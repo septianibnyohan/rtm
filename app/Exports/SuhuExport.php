@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Excel;
 use Illuminate\Contracts\Support\Responsable;
+use DB;
 
 class SuhuExport implements FromCollection, Responsable, WithHeadings
 {
@@ -50,11 +51,13 @@ class SuhuExport implements FromCollection, Responsable, WithHeadings
             $from = date($this->start_date);
             $to = date($this->end_date);
 
-            $list_suhu = Suhu::whereBetween('tanggal', [$from, $to])->get();
+            //$list_suhu = Suhu::whereBetween('tanggal', [$from, $to])->get();
+            $list_suhu = DB::table('suhu')->select('no', 'ldr', 'tanggal', 'waktu')->whereBetween('tanggal', [$from, $to])->orderBy('id', 'DESC')->get();
         }
         else
         {
-            $list_suhu = Suhu::orderBy('id', 'DESC')->get();
+            //$list_suhu = Suhu::orderBy('id', 'DESC')->get();
+            $list_suhu = DB::table('suhu')->select('no', 'ldr', 'tanggal', 'waktu')->orderBy('id', 'DESC')->get();
         }
 
         return $list_suhu;
@@ -65,12 +68,15 @@ class SuhuExport implements FromCollection, Responsable, WithHeadings
         return 
         [
             [
-                'Download '.date("Y-m-d").' '.date('H:i:s')
+                '# Download Date : '.date("Y-m-d").' ... '.date('H:i:s').' #'
+            ],
+            [
+                isset($this->start_date) && isset($this->end_date) ? '# Data from '.$this->start_date.' until '.$this->end_date.' #' : '# Data : ALL #'
             ],
             [
     
             ],
-            ["Id", "No", "Suhu", "Tanggal", "Waktu"]
+            ["No", "Suhu", "Tanggal", "Waktu"]
         ];
     }
 }

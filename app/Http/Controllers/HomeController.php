@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Models\Setting;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 
@@ -24,28 +26,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $settings = Setting::get();
+        $result = User::orderBy('first_name', 'ASC')->get();
 
-        $client_logo = "";
-        foreach($settings as $setting)
-        {
-            if ($setting->code == "room_capacity")
-            {
-                $room_capacity = $setting->value;
-            }
-
-            if ($setting->code == "client_name")
-            {
-                $client_name = $setting->value;
-            }
-
-            if ($setting->code == "client_logo")
-            {
-                $client_logo = $setting->value;
-            }
+        foreach($result as $row) {
+            $user_list[] = $row->first_name . ' ' . $row->last_name;
         }
 
-        return view('home', ["page_title" => "Dashboard", 'room_capacity' => $room_capacity,
-            'client_name' => $client_name, 'client_logo' => $client_logo]);
+        return view('home', ["page_title"=> "LEAVE", "user_list" => $user_list]);
     }
 }

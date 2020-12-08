@@ -38,7 +38,7 @@
                                 <table id="suhu-table" class="table table-striped table-bordered dataTable no-footer" style="width: 100%;" role="grid" aria-describedby="example_info">
                                     <thead>
                                         <tr role="row">
-                                            <th>Id</th>
+                                            <!-- <th>Id</th> -->
                                             <th>No</th>
                                             <th>Suhu</th>
                                             <th>Tanggal</th>
@@ -84,7 +84,7 @@ $(function() {
                 $('td', row).eq(1).addClass('text-danger');
                 $('td', row).eq(2).addClass('text-danger');
                 $('td', row).eq(3).addClass('text-danger');
-                $('td', row).eq(4).addClass('text-danger');
+                // $('td', row).eq(4).addClass('text-danger');
             }
         },
         order : [[ 0, "desc" ]],
@@ -92,7 +92,7 @@ $(function() {
         ajax: '{{ config('app.url')}}/listSuhu',
         'lengthChange': true,
         columns: [
-            { data: 'id', name: 'id' },
+            // { data: 'id', name: 'id' },
             { data: 'no', name: 'no' },
             { 
                 data: 'ldr', 
@@ -122,7 +122,7 @@ $(function() {
                     $('td', row).eq(1).addClass('text-danger');
                     $('td', row).eq(2).addClass('text-danger');
                     $('td', row).eq(3).addClass('text-danger');
-                    $('td', row).eq(4).addClass('text-danger');
+                    // $('td', row).eq(4).addClass('text-danger');
                 }
             },
             order : [[ 0, "desc" ]],
@@ -130,7 +130,7 @@ $(function() {
             ajax: '{{ config('app.url')}}/listSuhu?start_date=' + $('#start_date').val() + "&end_date=" + $('#end_date').val(),
             'lengthChange': true,
             columns: [
-                { data: 'id', name: 'id' },
+                // { data: 'id', name: 'id'},
                 { data: 'no', name: 'no' },
                 { 
                     data: 'ldr', 
